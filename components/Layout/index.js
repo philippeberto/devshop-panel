@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Menu from '../Menu';
 import { MdHome, MdLabel } from 'react-icons/md';
-import { FaProductHunt, FaRegBuilding } from 'react-icons/fa';
+import { FaBoxOpen, FaRegBuilding } from 'react-icons/fa';
 
 
 const Layout = ({ children }) => {
@@ -28,7 +28,7 @@ const Layout = ({ children }) => {
 
           <Menu.Nav>
             <Menu.Item href='/' Icon={MdHome}>Home</Menu.Item>
-            <Menu.Item href='/' Icon={FaProductHunt}>Produtos</Menu.Item>
+            <Menu.Item href='/' Icon={FaBoxOpen}>Produtos</Menu.Item>
             <Menu.Item href='/categories' Icon={MdLabel}>Categorias</Menu.Item>
             <Menu.Item href='/' Icon={FaRegBuilding}>Fornecedores</Menu.Item>
           </Menu.Nav>
