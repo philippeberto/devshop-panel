@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import Card from '../Card';
 import Menu from '../Menu';
-import Title from '../Title';
+import { MdHome, MdLabel } from 'react-icons/md';
+import { FaProductHunt, FaRegBuilding } from 'react-icons/fa';
+
+
 const Layout = ({ children }) => {
   const [sidebarOpen, setSideBarOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -25,10 +27,10 @@ const Layout = ({ children }) => {
           <Menu.Brand>DevShop</Menu.Brand>
 
           <Menu.Nav>
-            <Menu.Item href='/'>Dashboard</Menu.Item>
-            <Menu.Item href='/'>Produtos</Menu.Item>
-            <Menu.Item href='/categories'>Categorias</Menu.Item>
-            <Menu.Item href='/'>Fornecedores</Menu.Item>
+            <Menu.Item href='/' Icon={MdHome}>Home</Menu.Item>
+            <Menu.Item href='/' Icon={FaProductHunt}>Produtos</Menu.Item>
+            <Menu.Item href='/categories' Icon={MdLabel}>Categorias</Menu.Item>
+            <Menu.Item href='/' Icon={FaRegBuilding}>Fornecedores</Menu.Item>
           </Menu.Nav>
         </div>
 
