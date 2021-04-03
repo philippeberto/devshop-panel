@@ -3,11 +3,11 @@ import Card from '../components/Card';
 import Layout from '../components/Layout';
 import Title from '../components/Title';
 
-const Index = () => {
+const Categories = () => {
   return (
     <>
       <Layout>
-        <Title>DevPleno</Title>
+        <Title>Categorias</Title>
         <div className="mt-4">
           <div className="flex flex-wrap -mx-6">
             <div className="w-full px-6 sm:w-1/2 xl:w-1/3">
@@ -433,4 +433,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Categories;
