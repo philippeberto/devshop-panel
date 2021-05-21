@@ -4,6 +4,8 @@ import Title from '../../components/Title'
 import { useMutation } from '../../lib/graphql'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/router'
+import Button from '../../components/Button'
+import Input from '../../components/Input'
 
 
 
@@ -37,13 +39,18 @@ const Categories = () => {
     <>
       <Layout>
         <Title>Criar categoria</Title>
+        <div className='my-4'>
+          <Button.LinkOut href='/categories'>Voltar</Button.LinkOut>
+        </div>
         <div className="flex flex-col mt-8">
           <div className="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-            <div className="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
-              <form onSubmit={form.handleSubmit}>
-                <input type='text' name='name' onChange={form.handleChange} value={form.values.name} />
-                <input type='text' name='slug' onChange={form.handleChange} value={form.values.slug} />
-                <button type='submit'>Criar Categoria</button>
+            <div className="align-middle inline-block bg-white shadow overflow-hidden sm:rounded-lg border-b border-gray-200 p-12">
+              <form onSubmit={form.handleSubmit} className="">
+                <Input name='name' placeholder='Nome' onChange={form.handleChange} value={form.values.name} type='text' />
+                <Input name='slug' placeholder='Slug' onChange={form.handleChange} value={form.values.slug} type='text' textHelp='Ajuda URL`s amigáveis' />
+                <div className='m-2'>
+                  <Button type='submit'>Salvar</Button>
+                </div>
               </form>
             </div>
           </div>

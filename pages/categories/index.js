@@ -6,6 +6,8 @@ import { MdPeople } from 'react-icons/md'
 import Table from '../../components/Table'
 import { useMutation, useQuery } from '../../lib/graphql'
 import Link from 'next/link'
+import Button from '../../components/Button'
+import Alert from '../../components/Alert'
 
 const GET_ALL_CATEGORIES = `
   query {
@@ -26,7 +28,6 @@ const Categories = () => {
   const { data, mutate } = useQuery(GET_ALL_CATEGORIES)
   const [deleteData, deleteCategory] = useMutation(DELETE_CATEGORY)
   const remove = id => async () => {
-    console.log('clifou')
     await deleteCategory({ id })
     mutate()
   }
@@ -34,13 +35,8 @@ const Categories = () => {
     <>
       <Layout>
         <Title>Gerenciar Categorias</Title>
-        <div>
-          <div className='my-4'>
-            <Link href='./categories/create'>
-              <a>Criar Categoria</a>
-            </Link>
-
-          </div>
+        <div className='my-4'>
+          <Button.Link href='./categories/create'>Criar Categoria</Button.Link>
         </div>
 
         <div className="mt-8">
@@ -49,9 +45,7 @@ const Categories = () => {
 
         {data && data.getAllCategories && data.getAllCategories.length === 0 && (
 
-          <div className="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4" role="alert">
-            <p>Nenhuma categoria criada.</p>
-          </div>
+          <Alert >Nenhuma categoria criada.</Alert>
 
         )}
 
@@ -84,7 +78,7 @@ const Categories = () => {
 
                         <Table.Td
                           className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
-                          <Link href={`/edit/${item.id}`}>
+                          <Link href={`/categories/${item.id}/edit`}>
                             <a className="text-indigo-600 hover:text-indigo-900">Edit</a>
                           </Link>
                         </Table.Td>
