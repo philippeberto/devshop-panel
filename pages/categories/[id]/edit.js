@@ -43,8 +43,9 @@ const Categories = () => {
         id: router.query.id,
         ...values
       }
-      await updateCategory(category)
-      router.push('/categories')
+      const data = await updateCategory(category)
+      if (data && !data.errors)
+        router.push('/categories')
     }
   })
   useEffect(() => {
@@ -60,6 +61,9 @@ const Categories = () => {
         <div className="flex flex-col mt-8">
           <div className="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
             <div className="align-middle inline-block bg-white shadow overflow-hidden sm:rounded-lg border-b border-gray-200 p-12">
+              {
+                updatedData && !!updatedData.errors && <p className="bg-red-200 border-l-4 border-red-500 text-red-700 p-2 mb-4 w-auto">Ocorreu um erro ao salvar o dados.</p>
+              }
               <form onSubmit={form.handleSubmit}>
                 <Input type='text' name='name' placeholder='Nome' onChange={form.handleChange} value={form.values.name} />
                 <Input type='text' name='slug' placeholder='Slug' onChange={form.handleChange} value={form.values.slug} />
