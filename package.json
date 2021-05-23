@@ -17,7 +17,8 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-icons": "^4.2.0",
-    "swr": "^0.5.5"
+    "swr": "^0.5.5",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "autoprefixer": "^10.2.5",

@@ -1,12 +1,13 @@
 import React from 'react'
 import Layout from '../../components/Layout'
 import Title from '../../components/Title'
-import { useMutation, useQuery } from '../../lib/graphql'
+import { fetcher, useMutation, useQuery } from '../../lib/graphql'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/router'
 import Button from '../../components/Button'
 import Input from '../../components/Input'
 import Select from '../../components/Select'
+import * as Yup from 'yup'
 
 const GET_ALL_CATEGORIES = `
   query {
@@ -39,13 +40,38 @@ const Products = () => {
   const router = useRouter()
   const [data, createProduct] = useMutation(CREATE_PRODUCT)
   const { data: categories, getAllCategories } = useQuery(GET_ALL_CATEGORIES)
-  const form = useFormik({
+  const { handleSubmit, handleChange, values, touched, errors } = useFormik({
     initialValues: {
       name: '',
       slug: '',
       description: '',
       category: ''
     },
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .min(3, 'O nome deve ter ao menos 3 caracteres.')
+        .required('Campo obrigatório.'),
+      slug: Yup.string()
+        .min(3, 'O slug deve ter ao menos 3 caracteres.')
+        .required('Campo obrigatório.')
+        .test('isUnique', 'Este slug já existe.', async (value) => {
+          const result = await fetcher(JSON.stringify({
+            query: `
+              query {
+                getProductBySlug( slug: "${value}"){
+                  id
+                }
+              }
+          `}))
+          return result.errors ? true : false
+        }),
+      description: Yup.string()
+        .min(3, 'O nome deve ter ao menos 3 caracteres.')
+        .required('Campo obrigatório.'),
+      category: Yup.string()
+        .min(1, 'O nome deve ter ao menos 3 caracteres.')
+        .required('Campo obrigatório.')
+    }),
     onSubmit: async values => {
       const data = await createProduct(values)
       if (data && !data.errors)
@@ -77,11 +103,11 @@ const Products = () => {
               {
                 data && !!data.errors && <p className="bg-red-200 border-l-4 border-red-500 text-red-700 p-2 mb-4 w-auto">Ocorreu um erro ao salvar o dados.</p>
               }
-              <form onSubmit={form.handleSubmit} className="">
-                <Input name='name' placeholder='Nome' onChange={form.handleChange} value={form.values.name} type='text' />
-                <Input name='slug' placeholder='Slug' onChange={form.handleChange} value={form.values.slug} type='text' textHelp='Ajuda URL`s amigáveis' />
-                <Input name='description' placeholder='Descrição' onChange={form.handleChange} value={form.values.description} type='text' />
-                <Select name='category' onChange={form.handleChange} value={form.values.category} options={options} placeholder='Categoria' />
+              <form onSubmit={handleSubmit} className="">
+                <Input name='name' placeholder='Nome' onChange={handleChange} value={values.name} type='text' errors={errors.name} />
+                <Input name='slug' placeholder='Slug' onChange={handleChange} value={values.slug} type='text' textHelp='Ajuda URL`s amigáveis' errors={errors.slug} />
+                <Input name='description' placeholder='Descrição' onChange={handleChange} value={values.description} type='text' errors={errors.description} />
+                <Select name='category' onChange={handleChange} value={values.category} options={options} placeholder='Categoria' errors={errors.category} initial={{ id: '', label: 'Selecione uma Categoria...' }} />
                 <div className='m-2'>
                   <Button type='submit'>Salvar</Button>
                 </div>

@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react'
 import Layout from '../../../components/Layout'
 import Title from '../../../components/Title'
-import { useMutation, useQuery } from '../../../lib/graphql'
+import { useMutation, useQuery, fetcher } from '../../../lib/graphql'
 import { useFormik } from 'formik'
 import { useRouter } from 'next/router'
 import Input from '../../../components/Input'
 import Button from '../../../components/Button'
+import * as Yup from 'yup'
 
+let id = ''
 const UPDATE_CATEGORY = `
     mutation updateCategory($id: String!, $name: String!, $slug: String!) {
       updateCategory (input: {
@@ -23,6 +25,7 @@ const UPDATE_CATEGORY = `
 
 const Categories = () => {
   const router = useRouter()
+  id = router.query.id
   const { data } = useQuery(`
     query{
       getCategoryById (id:"${router.query.id}"){
@@ -32,12 +35,33 @@ const Categories = () => {
   }
   `)
   const [updatedData, updateCategory] = useMutation(UPDATE_CATEGORY)
+  const { handleSubmit, handleChange, setFieldValue, values, touched, errors } = useFormik({
 
-  const form = useFormik({
     initialValues: {
       name: '',
       slug: ''
     },
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .min(3, 'O nome deve ter ao menos 3 caracteres.')
+        .required('Campo obrigatório.'),
+      slug: Yup.string()
+        .min(3, 'O slug deve ter ao menos 3 caracteres.')
+        .required('Campo obrigatório.')
+        .test('isUnique', 'Este slug já existe.', async (value) => {
+          const result = await fetcher(JSON.stringify({
+            query: `
+              query {
+                getCategoryBySlug( slug: "${value}"){
+                  id
+                }
+              }
+          `}))
+          if (result.data && result.data.getCategoryBySlug.id === id)
+            return true
+          return result.errors ? true : false
+        })
+    }),
     onSubmit: async values => {
       const category = {
         id: router.query.id,
@@ -50,8 +74,8 @@ const Categories = () => {
   })
   useEffect(() => {
     if (data && data.getCategoryById) {
-      form.setFieldValue('name', data.getCategoryById.name)
-      form.setFieldValue('slug', data.getCategoryById.slug)
+      setFieldValue('name', data.getCategoryById.name)
+      setFieldValue('slug', data.getCategoryById.slug)
     }
   }, [data])
   return (
@@ -64,9 +88,9 @@ const Categories = () => {
               {
                 updatedData && !!updatedData.errors && <p className="bg-red-200 border-l-4 border-red-500 text-red-700 p-2 mb-4 w-auto">Ocorreu um erro ao salvar o dados.</p>
               }
-              <form onSubmit={form.handleSubmit}>
-                <Input type='text' name='name' placeholder='Nome' onChange={form.handleChange} value={form.values.name} />
-                <Input type='text' name='slug' placeholder='Slug' onChange={form.handleChange} value={form.values.slug} />
+              <form onSubmit={handleSubmit}>
+                <Input type='text' name='name' placeholder='Nome' onChange={handleChange} value={values.name} errors={errors.name} />
+                <Input type='text' name='slug' placeholder='Slug' onChange={handleChange} value={values.slug} errors={errors.slug} textHelp='Ajuda URL`s amigáveis' />
                 <Button type='submit'>Editar</Button>
               </form>
             </div>
