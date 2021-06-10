@@ -1,22 +1,22 @@
-import { useState } from 'react'
-import Menu from '../Menu'
-import { MdHome, MdLabel } from 'react-icons/md'
-import { FaBoxOpen, FaRegBuilding } from 'react-icons/fa'
+import { useState } from 'react';
+import Menu from '../Menu';
+import { MdHome, MdLabel } from 'react-icons/md';
+import { FaBoxOpen, FaRegBuilding } from 'react-icons/fa';
 
 
 const Layout = ({ children }) => {
-  const [sidebarOpen, setSideBarOpen] = useState(false)
-  const [dropdownOpen, setDropdownOpen] = useState(false)
-  const [notificationOpen, setNotificationOpen] = useState(false)
+  const [sidebarOpen, setSideBarOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false);
   const nclose = () => {
-    setNotificationOpen(false)
-  }
+    setNotificationOpen(false);
+  };
   const ddclose = () => {
-    setDropdownOpen(false)
-  }
+    setDropdownOpen(false);
+  };
   const open = () => {
-    setSideBarOpen(true)
-  }
+    setSideBarOpen(true);
+  };
   return (
     <div>
       {/* <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script> */}
@@ -29,6 +29,7 @@ const Layout = ({ children }) => {
           <Menu.Nav>
             <Menu.Item href='/' Icon={MdHome}>Home</Menu.Item>
             <Menu.Item href='/products' Icon={FaBoxOpen}>Produtos</Menu.Item>
+            <Menu.Item href='/brands' Icon={MdLabel}>Marcas</Menu.Item>
             <Menu.Item href='/categories' Icon={MdLabel}>Categorias</Menu.Item>
             <Menu.Item href='/' Icon={FaRegBuilding}>Fornecedores</Menu.Item>
           </Menu.Nav>
@@ -137,7 +138,7 @@ const Layout = ({ children }) => {
         </div>
       </div>
     </div >
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

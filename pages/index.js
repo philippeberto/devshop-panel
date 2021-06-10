@@ -1,9 +1,9 @@
-import React from 'react';
-import Card from '../components/Card';
-import Layout from '../components/Layout';
-import Title from '../components/Title';
-import { MdPeople } from 'react-icons/md';
-import Table from '../components/Table';
+import React from 'react'
+import Card from '../components/Card'
+import Layout from '../components/Layout'
+import Title from '../components/Title'
+import { MdPeople } from 'react-icons/md'
+import Table from '../components/Table'
 
 
 const Index = () => {
@@ -34,7 +34,8 @@ const Index = () => {
                   <Card.Title>2000</Card.Title>
                   <Card.Description>Produtos</Card.Description>
                 </Card.Data>
-              </Card>                  </div>
+              </Card>
+            </div>
 
             <div className="w-full mt-6 px-6 sm:w-1/2 xl:w-1/3 sm:mt-0">
               <Card>
@@ -113,7 +114,7 @@ const Index = () => {
         </div>
       </Layout>
     </>
-  );
-};
+  )
+}
 
-export default Index;
+export default Index
