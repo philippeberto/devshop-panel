@@ -1,11 +1,11 @@
-import React from 'react';
-import Layout from '../../components/Layout';
-import Title from '../../components/Title';
-import Table from '../../components/Table';
-import { useMutation, useQuery } from '../../lib/graphql';
-import Link from 'next/link';
-import Button from '../../components/Button';
-import Alert from '../../components/Alert';
+import React from 'react'
+import Layout from '../../components/Layout'
+import Title from '../../components/Title'
+import Table from '../../components/Table'
+import { useMutation, useQuery } from '../../lib/graphql'
+import Link from 'next/link'
+import Button from '../../components/Button'
+import Alert from '../../components/Alert'
 
 const GET_ALL_BRAND = `
   query {
@@ -15,20 +15,20 @@ const GET_ALL_BRAND = `
       slug
     }
   }
-`;
+`
 const DELETE_BRAND = `
   mutation deleteBrand ($id: String!) {
     deleteBrand (id: $id) 
   }
-`;
+`
 
 const Brands = () => {
-  const { data, mutate } = useQuery(GET_ALL_BRAND);
-  const [deleteData, deleteBrand] = useMutation(DELETE_BRAND);
+  const { data, mutate } = useQuery(GET_ALL_BRAND)
+  const [deleteData, deleteBrand] = useMutation(DELETE_BRAND)
   const remove = id => async () => {
-    await deleteBrand({ id });
-    mutate();
-  };
+    await deleteBrand({ id })
+    mutate()
+  }
   return (
     <>
       <Layout>
@@ -76,6 +76,12 @@ const Brands = () => {
 
                         <Table.Td
                           className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
+                          <Link href={`/brands/${item.id}/upload`}>
+                            <a className="text-indigo-600 hover:text-indigo-900">Upload Logo</a>
+                          </Link>
+                        </Table.Td>
+                        <Table.Td
+                          className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
                           <Link href={`/brands/${item.id}/edit`}>
                             <a className="text-indigo-600 hover:text-indigo-900">Edit</a>
                           </Link>
@@ -84,7 +90,7 @@ const Brands = () => {
                           className="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
                           <a href='#' className="text-indigo-600 hover:text-indigo-900" onClick={remove(item.id)}>Delete</a>
                         </Table.Td>
-                      </Table.Tr>);
+                      </Table.Tr>)
                     })}
                   </Table.Body>
                 </Table>
@@ -94,7 +100,7 @@ const Brands = () => {
         )}
       </Layout>
     </>
-  );
-};
+  )
+}
 
-export default Brands;
+export default Brands
